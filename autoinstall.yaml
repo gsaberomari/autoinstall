@@ -16,10 +16,9 @@ autoinstall:
           - name: swap
             size: 16GB
   users:
-    - name: madara
+    - name: {your_username}
       groups: sudo
       sudo: ALL=(ALL) NOPASSWD:ALL
-      passwd: '$6$rounds=656000$v5gT6248zB6v4g9L$wE72t2Z7qU1.c/V6qN.7QjH1bK17y9eZ7nV1s0d6/7y2l3r0gN01'
       shell: /bin/bash
       home: /home/madara
   packages:
@@ -48,5 +47,7 @@ autoinstall:
     - apt autoremove -y
     - flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     - flatpak install flathub org.qbittorrent.qBittorrent -y
+    # - apt install linux-image-generic-hwe-23.10 -y  # Install the stable HWE kernel for 23.10
+    # - apt install linux-headers-$(uname -r) dkms nvidia-driver-535 -y  # Adjust driver version if needed (Don't use these)
     - systemctl enable fstrim.timer  # Enable TRIM for SSDs
     - reboot
