@@ -1,0 +1,52 @@
+#cloud-config
+autoinstall:
+  version: 1
+  locale: en_US
+  keyboard: us
+  timezone: America/New_York
+  storage:
+    config:
+      - type: lvm
+        pvs:
+          - /dev/sda1  # Adjust if your disk is different
+        vg: ubuntu-vg
+        lv:
+          - name: root
+            size: 20%  # Adjust root partition size as needed
+          - name: swap
+            size: 16GB
+  users:
+    - name: madara
+      groups: sudo
+      sudo: ALL=(ALL) NOPASSWD:ALL
+      passwd: '$6$rounds=656000$v5gT6248zB6v4g9L$wE72t2Z7qU1.c/V6qN.7QjH1bK17y9eZ7nV1s0d6/7y2l3r0gN01'
+      shell: /bin/bash
+      home: /home/madara
+  packages:
+    - tasksel
+    - ubuntu-desktop-minimal
+    - build-essential
+    - git
+    - curl
+    - wget
+    - vim
+    - htop
+    - net-tools
+    - openssh-server
+    - flatpak
+    - zram-config
+    - amd64-microcode
+    - vlc 
+    - fswatch
+  late-commands:
+    - curtin in-target -- bash -c "echo 'deb http://archive.ubuntu.com/ubuntu mantic main restricted universe multiverse' > /etc/apt/sources.list"
+    - curtin in-target -- bash -c "echo 'deb http://archive.ubuntu.com/ubuntu mantic-updates main restricted universe multiverse' >> /etc/apt/sources.list"
+    - curtin in-target -- bash -c "echo 'deb http://archive.ubuntu.com/ubuntu mantic-backports main restricted universe multiverse' >> /etc/apt/sources.list"
+    - curtin in-target -- bash -c "echo 'deb http://security.ubuntu.com/ubuntu mantic-security main restricted universe multiverse' >> /etc/apt/sources.list" 
+    - apt update
+    - apt upgrade -y
+    - apt autoremove -y
+    - flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    - flatpak install flathub org.qbittorrent.qBittorrent -y
+    - systemctl enable fstrim.timer  # Enable TRIM for SSDs
+    - reboot
