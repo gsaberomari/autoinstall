@@ -1,4 +1,4 @@
-# autoinstall
+# Autoinstall.yaml
 Ubuntu 24.10 Autoinstall Script
 #Ubuntu 23.10 Autoinstall Script for testing only.
 
