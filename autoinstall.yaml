@@ -3,7 +3,7 @@ autoinstall:
   version: 1
   locale: en_US
   keyboard: us
-  timezone: America/New_York
+  timezone: Asia/Amman
   storage:
     config:
       - type: lvm
@@ -21,9 +21,8 @@ autoinstall:
       sudo: ALL=(ALL) NOPASSWD:ALL
       passwd: # Don'e enter RAW passwords here , instead use hashed values.
       shell: /bin/bash
-      home: /home/your_username
+      home: /home/madara
   packages:
-    - tasksel
     - ubuntu-desktop-minimal
     - build-essential
     - git
