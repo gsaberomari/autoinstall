@@ -12,14 +12,14 @@ autoinstall:
         vg: ubuntu-vg
         lv:
           - name: root
-            size: 20%  # Adjust root partition size as needed
+            size: 40%  # Adjust root partition size as needed
           - name: swap
-            size: 16GB
+            size: 8GB
   users:
-    - name: your_username
+    - name: madara
       groups: sudo
       sudo: ALL=(ALL) NOPASSWD:ALL
-      passwd: # Don'e enter RAW passwords here , instead use hashed values.
+      passwd: # Don'e enter RAW passwords here, instead use hashed values.
       shell: /bin/bash
       home: /home/madara
   packages:
@@ -35,8 +35,8 @@ autoinstall:
     - flatpak
     - zram-config
     - amd64-microcode
-    - vlc 
-    - fswatch
+    - vlc  # Versatile media player
+    - ffmpeg  # For command-line media operations
   late-commands:
     - curtin in-target -- bash -c "echo 'deb http://archive.ubuntu.com/ubuntu oriocle main restricted universe multiverse' > /etc/apt/sources.list"
     - curtin in-target -- bash -c "echo 'deb http://archive.ubuntu.com/ubuntu oriocle-updates main restricted universe multiverse' >> /etc/apt/sources.list"
@@ -45,9 +45,8 @@ autoinstall:
     - apt update
     - apt upgrade -y
     - apt autoremove -y
-    # - apt install linux-image-generic-hwe-24.10 -y  # Install the stable HWE kernel
-    # - apt install linux-headers-$(uname -r) dkms nvidia-driver-535 -y  # Adjust driver version if needed ## CAN Break the installation easy, use with caution.
     - flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     - flatpak install flathub org.qbittorrent.qBittorrent -y
     - systemctl enable fstrim.timer  # Enable TRIM for SSDs
+    - systemctl enable unattended-upgrades
     - reboot
